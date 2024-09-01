@@ -32,21 +32,24 @@
     "test": "mocha"
   },
   "dependencies": {
-    "@types/estree": "^1.0.5",
     "mdast-util-to-hast": "^13.2.0",
     "mdast-util-wiki-link": "file:../mdast-util-wiki-link",
-    "micromark-extension-wiki-link": "file:../micromark-extension-wiki-link",
-    "mocha": "^10.7.3",
-    "tsx": "^4.19.0"
+    "micromark-extension-wiki-link": "file:../micromark-extension-wiki-link"
   },
   "devDependencies": {
+    "@types/estree": "^1.0.5",
     "eslint": "^9.9.1",
+    "eslint-config-prettier": "^9.1.0",
     "mdast-util-from-markdown": "^2.0.1",
+    "mocha": "^10.7.3",
+    "prettier": "^3.3.3",
     "rehype-stringify": "^10.0.0",
     "remark-parse": "^11.0.0",
     "remark-rehype": "^11.1.0",
     "remark-stringify": "^11.0.0",
+    "tsx": "^4.19.0",
     "typescript": "^5.5.4",
+    "typescript-eslint": "^8.3.0",
     "unified": "^11.0.5",
     "unist-util-select": "^5.1.0",
     "unist-util-visit": "^5.0.0"
