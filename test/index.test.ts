@@ -13,15 +13,12 @@ describe('remark-wiki-link', () => {
   test('parses a wiki link that has a matching permalink', () => {
     const processor = unified()
       .use(markdown)
-      .use(wikiLinkPlugin, {
-        permalinks: ['wiki_link'],
-      });
+      .use(wikiLinkPlugin, { permalinks: ['wiki_link'] });
 
     let ast: Node = processor.parse('[[Wiki Link]]');
     ast = processor.runSync(ast);
 
     visit(ast, 'wikiLink', (node: WikiLinkNode) => {
-
       assert.equal(node.data.exists, true);
       assert.equal(node.data.permalink, 'wiki_link');
       assert.equal(node.data.hName, 'a');
@@ -32,15 +29,12 @@ describe('remark-wiki-link', () => {
   });
 
   test('parses a wiki link that has no matching permalink', () => {
-    const processor = unified().use(markdown).use(wikiLinkPlugin, {
-      permalinks: [],
-    });
+    const processor = unified().use(markdown).use(wikiLinkPlugin, { permalinks: [] });
 
     let ast: Node = processor.parse('[[New Page]]');
     ast = processor.runSync(ast);
 
     visit(ast, 'wikiLink', (node: WikiLinkNode) => {
-
       assert.equal(node.data.exists, false);
       assert.equal(node.data.permalink, 'new_page');
       assert.equal(node.data.hName, 'a');
@@ -51,15 +45,12 @@ describe('remark-wiki-link', () => {
   });
 
   test('handles wiki links with aliases', () => {
-    const processor = unified().use(markdown).use(wikiLinkPlugin, {
-      permalinks: [],
-    });
+    const processor = unified().use(markdown).use(wikiLinkPlugin, {permalinks: [] });
 
     let ast: Node = processor.parse('[[Real Page:Page Alias]]');
     ast = processor.runSync(ast);
 
     visit(ast, 'wikiLink', (node: WikiLinkNode) => {
-
       assert.equal(node.data.exists, false);
       assert.equal(node.data.permalink, 'real_page');
       assert.equal(node.data.hName, 'a');
@@ -81,7 +72,6 @@ describe('remark-wiki-link', () => {
     ast = processor.runSync(ast);
 
     visit(ast, 'wikiLink', (node: WikiLinkNode) => {
-
       assert.equal(node.data.exists, false);
       assert.equal(node.data.permalink, 'real_page');
       assert.equal(node.data.hName, 'a');

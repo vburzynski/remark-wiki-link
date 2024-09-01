@@ -6,7 +6,7 @@ import { Extension as MicromarkExtension } from 'micromark-util-types';
 import { Extension as FromMarkdownExtension } from 'mdast-util-from-markdown';
 import { Options as ToMarkdownOptions } from 'mdast-util-to-markdown';
 
-type RemarkWikiLinkOptions = FromMarkdownOptions & WikiLinkSyntaxOptions;
+export type RemarkWikiLinkOptions = FromMarkdownOptions & WikiLinkSyntaxOptions & ToMarkdownOptions;
 
 let warningIssued: boolean = false;
 
@@ -18,7 +18,7 @@ declare module 'unified' {
   }
 }
 
-export const wikiLinkPlugin: Plugin = function wikiLinkPlugin(this: Processor, opts: Partial<RemarkWikiLinkOptions> = {}) {
+export const wikiLinkPlugin: Plugin<[Partial<RemarkWikiLinkOptions>?]> = function wikiLinkPlugin(this: Processor, opts?: Partial<RemarkWikiLinkOptions>) {
   const data: Data = this.data();
 
   // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
