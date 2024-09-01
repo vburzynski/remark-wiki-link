@@ -1,11 +1,13 @@
-import unified from 'unified'
+import assert from 'assert';
+import { describe, test } from 'mocha';
+import { unified } from 'unified'
 import markdown from 'remark-parse'
-import visit from 'unist-util-visit'
+import { visit } from 'unist-util-visit'
 import remark2markdown from 'remark-stringify'
 import { Node, Data } from 'unist'
 
 import wikiLinkPlugin, { wikiLinkPlugin as namedWikiLinkPlugin } from '../src'
-import select from 'unist-util-select'
+import { select } from 'unist-util-select'
 
 interface WikiLinkHProperties {
   className: string;
@@ -44,12 +46,12 @@ describe('remark-wiki-link', () => {
     visit(ast, 'wikiLink', (node) => {
       assertWikiLink(node)
 
-      expect(node.data.exists).toEqual(true)
-      expect(node.data.permalink).toEqual('wiki_link')
-      expect(node.data.hName).toEqual('a')
-      expect(node.data.hProperties.className).toEqual('internal')
-      expect(node.data.hProperties.href).toEqual('#/page/wiki_link')
-      expect(node.data.hChildren[0].value).toEqual('Wiki Link')
+      assert.equal(node.data.exists, true)
+      assert.equal(node.data.permalink, 'wiki_link')
+      assert.equal(node.data.hName, 'a')
+      assert.equal(node.data.hProperties.className, 'internal')
+      assert.equal(node.data.hProperties.href, '#/page/wiki_link')
+      assert.equal(node.data.hChildren[0].value, 'Wiki Link')
     })
   })
 
@@ -66,12 +68,12 @@ describe('remark-wiki-link', () => {
     visit(ast, 'wikiLink', (node) => {
       assertWikiLink(node)
 
-      expect(node.data.exists).toEqual(false)
-      expect(node.data.permalink).toEqual('new_page')
-      expect(node.data.hName).toEqual('a')
-      expect(node.data.hProperties.className).toEqual('internal new')
-      expect(node.data.hProperties.href).toEqual('#/page/new_page')
-      expect(node.data.hChildren[0].value).toEqual('New Page')
+      assert.equal(node.data.exists, false)
+      assert.equal(node.data.permalink, 'new_page')
+      assert.equal(node.data.hName, 'a')
+      assert.equal(node.data.hProperties.className, 'internal new')
+      assert.equal(node.data.hProperties.href, '#/page/new_page')
+      assert.equal(node.data.hChildren[0].value, 'New Page')
     })
   })
 
@@ -88,14 +90,14 @@ describe('remark-wiki-link', () => {
     visit(ast, 'wikiLink', (node) => {
       assertWikiLink(node)
 
-      expect(node.data.exists).toEqual(false)
-      expect(node.data.permalink).toEqual('real_page')
-      expect(node.data.hName).toEqual('a')
-      expect(node.data.alias).toEqual('Page Alias')
-      expect(node.value).toEqual('Real Page')
-      expect(node.data.hProperties.className).toEqual('internal new')
-      expect(node.data.hProperties.href).toEqual('#/page/real_page')
-      expect(node.data.hChildren[0].value).toEqual('Page Alias')
+      assert.equal(node.data.exists, false)
+      assert.equal(node.data.permalink, 'real_page')
+      assert.equal(node.data.hName, 'a')
+      assert.equal(node.data.alias, 'Page Alias')
+      assert.equal(node.value, 'Real Page')
+      assert.equal(node.data.hProperties.className, 'internal new')
+      assert.equal(node.data.hProperties.href, '#/page/real_page')
+      assert.equal(node.data.hChildren[0].value, 'Page Alias')
     })
   })
 
@@ -113,14 +115,14 @@ describe('remark-wiki-link', () => {
     visit(ast, 'wikiLink', node => {
       assertWikiLink(node)
 
-      expect(node.data.exists).toEqual(false)
-      expect(node.data.permalink).toEqual('real_page')
-      expect(node.data.hName).toEqual('a')
-      expect(node.data.alias).toEqual('Page Alias')
-      expect(node.value).toEqual('Real Page')
-      expect(node.data.hProperties.className).toEqual('internal new')
-      expect(node.data.hProperties.href).toEqual('#/page/real_page')
-      expect(node.data.hChildren[0].value).toEqual('Page Alias')
+      assert.equal(node.data.exists, false)
+      assert.equal(node.data.permalink, 'real_page')
+      assert.equal(node.data.hName, 'a')
+      assert.equal(node.data.alias, 'Page Alias')
+      assert.equal(node.value, 'Real Page')
+      assert.equal(node.data.hProperties.className, 'internal new')
+      assert.equal(node.data.hProperties.href, '#/page/real_page')
+      assert.equal(node.data.hChildren[0].value, 'Page Alias')
     })
   })
 
@@ -130,8 +132,8 @@ describe('remark-wiki-link', () => {
       .use(remark2markdown)
       .use(wikiLinkPlugin, { permalinks: ['wiki_link'] })
 
-    const stringified = processor.processSync('[[Wiki Link]]').contents.toString().trim()
-    expect(stringified).toEqual('[[Wiki Link]]')
+    const stringified = processor.processSync('[[Wiki Link]]').toString().trim()
+    assert.equal(stringified, '[[Wiki Link]]')
   })
 
   test('stringifies aliased wiki links', () => {
@@ -140,8 +142,8 @@ describe('remark-wiki-link', () => {
       .use(remark2markdown)
       .use(wikiLinkPlugin)
 
-    const stringified = processor.processSync('[[Real Page:Page Alias]]').contents.toString().trim()
-    expect(stringified).toEqual('[[Real Page:Page Alias]]')
+    const stringified = processor.processSync('[[Real Page:Page Alias]]').toString().trim()
+    assert.equal(stringified, '[[Real Page:Page Alias]]')
   })
 
   describe('configuration options', () => {
@@ -160,9 +162,9 @@ describe('remark-wiki-link', () => {
 
       visit(ast, 'wikiLink', (node) => {
         assertWikiLink(node)
-        expect(node.data.exists).toEqual(true)
-        expect(node.data.permalink).toEqual('A Page')
-        expect(node.data.hProperties.href).toEqual('#/page/A Page')
+        assert.equal(node.data.exists, true)
+        assert.equal(node.data.permalink, 'A Page')
+        assert.equal(node.data.hProperties.href, '#/page/A Page')
       })
     })
 
@@ -178,7 +180,7 @@ describe('remark-wiki-link', () => {
 
       visit(ast, 'wikiLink', (node) => {
         assertWikiLink(node)
-        expect(node.data.hProperties.className).toEqual('internal new_page')
+        assert.equal(node.data.hProperties.className, 'internal new_page')
       })
     })
 
@@ -194,7 +196,7 @@ describe('remark-wiki-link', () => {
 
       visit(ast, 'wikiLink', (node) => {
         assertWikiLink(node)
-        expect(node.data.hProperties.href).toEqual('a_page')
+        assert.equal(node.data.hProperties.href, 'a_page')
       })
     })
 
@@ -211,7 +213,7 @@ describe('remark-wiki-link', () => {
 
       visit(ast, 'wikiLink', (node) => {
         assertWikiLink(node)
-        expect(node.data.hProperties.className).toEqual('wiki_link')
+        assert.equal(node.data.hProperties.className, 'wiki_link')
       })
     })
   })
@@ -227,7 +229,7 @@ describe('remark-wiki-link', () => {
       let ast = processor.parse('t[[\nt')
       ast = processor.runSync(ast)
 
-      expect(!select.select('wikiLink', ast)).toBeTruthy()
+      assert.equal(!select('wikiLink', ast), true)
     })
 
     test('handles open wiki links at end of file', () => {
@@ -240,7 +242,7 @@ describe('remark-wiki-link', () => {
       let ast = processor.parse('t [[')
       ast = processor.runSync(ast)
 
-      expect(!select.select('wikiLink', ast)).toBeTruthy()
+      assert.equal(!select('wikiLink', ast), true)
     })
 
     test('handles open wiki links with partial data', () => {
@@ -253,7 +255,7 @@ describe('remark-wiki-link', () => {
       let ast = processor.parse('t [[tt\nt')
       ast = processor.runSync(ast)
 
-      expect(!select.select('wikiLink', ast)).toBeTruthy()
+      assert.equal(!select('wikiLink', ast), true)
     })
 
     test('handles open wiki links with partial alias divider', () => {
@@ -267,7 +269,7 @@ describe('remark-wiki-link', () => {
       let ast = processor.parse('[[t::\n')
       ast = processor.runSync(ast)
 
-      expect(!select.select('wikiLink', ast)).toBeTruthy()
+      assert.equal(!select('wikiLink', ast), true)
     })
 
     test('handles open wiki links with partial alias', () => {
@@ -280,11 +282,11 @@ describe('remark-wiki-link', () => {
       let ast = processor.parse('[[t:\n')
       ast = processor.runSync(ast)
 
-      expect(!select.select('wikiLink', ast)).toBeTruthy()
+      assert.equal(!select('wikiLink', ast), true)
     })
   })
 
   test('exports the plugin with named exports', () => {
-    expect(wikiLinkPlugin).toEqual(namedWikiLinkPlugin)
+    assert.equal(wikiLinkPlugin, namedWikiLinkPlugin)
   })
 })

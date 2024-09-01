@@ -29,13 +29,15 @@
     "lint:fix": "eslint --fix src/ test/",
     "prepare": "npm run build",
     "pretest": "npm run build",
-    "test": "npm run lint && NODE_OPTIONS=--experimental-vm-modules jest"
+    "test": "mocha"
   },
   "dependencies": {
     "@types/estree": "^1.0.5",
     "mdast-util-to-hast": "^13.2.0",
     "mdast-util-wiki-link": "file:../mdast-util-wiki-link",
-    "micromark-extension-wiki-link": "file:../micromark-extension-wiki-link"
+    "micromark-extension-wiki-link": "file:../micromark-extension-wiki-link",
+    "mocha": "^10.7.3",
+    "tsx": "^4.19.0"
   },
   "devDependencies": {
     "eslint": "^9.9.1",
