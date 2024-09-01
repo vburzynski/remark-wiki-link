@@ -1,33 +1,39 @@
-import { syntax } from 'micromark-extension-wiki-link'
-import { fromMarkdown, toMarkdown } from 'mdast-util-wiki-link'
+import type { Data, Plugin, Processor } from 'unified';
 
-let warningIssued: boolean = false
+import { syntax, WikiLinkSyntaxOptions } from 'micromark-extension-wiki-link';
+import { fromMarkdown, toMarkdown, type FromMarkdownOptions } from 'mdast-util-wiki-link';
+import { Extension as MicromarkExtension } from 'micromark-util-types';
+import { Extension as FromMarkdownExtension } from 'mdast-util-from-markdown';
+import { Options as ToMarkdownOptions } from 'mdast-util-to-markdown';
 
-function wikiLinkPlugin (this: any, opts = {}) {
-  const data = this.data()
+type RemarkWikiLinkOptions = FromMarkdownOptions & WikiLinkSyntaxOptions;
 
-  function add (field: any, value: any) {
-    if (data[field]) data[field].push(value)
-    else data[field] = [value]
+let warningIssued: boolean = false;
+
+declare module 'unified' {
+  interface Data {
+    micromarkExtensions?: MicromarkExtension[] | undefined
+    fromMarkdownExtensions?: FromMarkdownExtension[] | undefined
+    toMarkdownExtensions?: ToMarkdownOptions[] | undefined
   }
-
-  if (!warningIssued &&
-      ((this.Parser &&
-        this.Parser.prototype &&
-        this.Parser.prototype.blockTokenizers) ||
-       (this.Compiler &&
-        this.Compiler.prototype &&
-        this.Compiler.prototype.visitors))) {
-    warningIssued = true
-    console.warn(
-      '[remark-wiki-link] Warning: please upgrade to remark 13 to use this plugin'
-    )
-  }
-
-  add('micromarkExtensions', syntax(opts))
-  add('fromMarkdownExtensions', fromMarkdown(opts))
-  add('toMarkdownExtensions', toMarkdown(opts))
 }
 
-export { wikiLinkPlugin }
-export default wikiLinkPlugin
+export const wikiLinkPlugin: Plugin = function wikiLinkPlugin(this: Processor, opts: Partial<RemarkWikiLinkOptions> = {}) {
+  const data: Data = this.data();
+
+  // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
+  if (!warningIssued && ((this.Parser?.prototype?.blockTokenizers) || (this.Compiler?.prototype?.visitors)) ) {
+    warningIssued = true;
+    console.warn('[remark-wiki-link] Warning: please upgrade to remark 13 to use this plugin');
+  }
+
+  const micromarkExtensions = data.micromarkExtensions || (data.micromarkExtensions = []);
+  const fromMarkdownExtensions = data.fromMarkdownExtensions || (data.fromMarkdownExtensions = []);
+  const toMarkdownExtensions = data.toMarkdownExtensions || (data.toMarkdownExtensions = []);
+
+  micromarkExtensions.push(syntax(opts));
+  fromMarkdownExtensions.push(fromMarkdown(opts));
+  toMarkdownExtensions.push(toMarkdown(opts));
+}
+
+export default wikiLinkPlugin;

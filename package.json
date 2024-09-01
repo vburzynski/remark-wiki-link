@@ -25,13 +25,16 @@
   },
   "scripts": {
     "build": "tsc --build --clean && tsc --build",
-    "lint": "eslint src/ test/",
-    "lint:fix": "eslint --fix src/ test/",
+    "lint": "eslint {src,test}",
+    "lint:fix": "eslint --fix {src,test}",
     "prepare": "npm run build",
     "pretest": "npm run build",
-    "test": "mocha"
+    "test": "mocha",
+    "prettier": "npx prettier --write ./{src,test}"
   },
   "dependencies": {
+    "@types/mocha": "^10.0.7",
+    "@types/node": "^22.5.1",
     "mdast-util-to-hast": "^13.2.0",
     "mdast-util-wiki-link": "file:../mdast-util-wiki-link",
     "micromark-extension-wiki-link": "file:../micromark-extension-wiki-link"
