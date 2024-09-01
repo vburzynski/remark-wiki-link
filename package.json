@@ -38,15 +38,15 @@
     "micromark-extension-wiki-link": "file:../micromark-extension-wiki-link"
   },
   "devDependencies": {
-    "eslint": "^7.11.0",
-    "mdast-util-from-markdown": "^0.8.4",
-    "rehype-stringify": "^8.0.0",
-    "remark-parse": "^9.0.0",
-    "remark-rehype": "^8.0.0",
-    "remark-stringify": "^9.0.1",
-    "typescript": "^5.2.2",
-    "unified": "^9.2.0",
-    "unist-util-select": "^3.0.4",
-    "unist-util-visit": "^2.0.3"
+    "eslint": "^9.9.1",
+    "mdast-util-from-markdown": "^2.0.1",
+    "rehype-stringify": "^10.0.0",
+    "remark-parse": "^11.0.0",
+    "remark-rehype": "^11.1.0",
+    "remark-stringify": "^11.0.0",
+    "typescript": "^5.5.4",
+    "unified": "^11.0.5",
+    "unist-util-select": "^5.1.0",
+    "unist-util-visit": "^5.0.0"
   }
 }
